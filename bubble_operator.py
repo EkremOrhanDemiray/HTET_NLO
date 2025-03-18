@@ -181,7 +181,7 @@ def c1Coeff(m,r,g,maxEnergy, angularMomUV):
                 sumTerm2 += 1/( omegaList[k]*omegaList[kPrime]*(pow(maxEnergy - omegaList[k]-omegaList[kPrime],2) -pow(k-kPrime,2)/pow(r,2) ))
                 
     for k in range(1,angularMomUV):
-        for kPrime in range(1,k-1):
+        for kPrime in range(1,k):
             if ( maxEnergy - omegaList[abs(k-kPrime)] -omegaList[k] - kPrime/r - 2*k/r - 2/r > 0):
                 sumTerm3 += 1/(omegaList[k]*omegaList[abs(k-kPrime)]*(pow(maxEnergy - omegaList[abs(k-kPrime)] -omegaList[k],2) -pow(kPrime,2)/pow(r,2)))
     
