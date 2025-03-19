@@ -1,5 +1,9 @@
 #True Version 
 from scipy.sparse.linalg import eigs
+import common_functions
+import genham
+import counter_terms
+import bubble_operator
 
 m=1
 r=20/(2*math.pi)
@@ -118,9 +122,9 @@ for g in gg:
 
         hLOOdd = h0MatOdd + mv2_sqEkrem(e_max, m, r, g, l_uv)*h2MatOdd + 1/24* (g + lambda2Ekrem(e_max, m, r, g, l_uv))*h4MatOdd
 
-        hNLOOdd = (1/24)*alpha1Ekrem(e_max,m,r,g,l_uv)*(np.dot(h4MatOdd,h0MatOdd) - np.dot(h0MatOdd,h4MatOdd)) + (1/24)*alpha2Ekrem(e_max,m,g)*np.dot(h0MatOdd,h4MatOdd)
-        hNLOOdd += 0.5*beta1Ekrem(e_max,m,r,g,l_uv)*np.dot(h0MatOdd,h2MatOdd)+ 0.5*beta2Ekrem(e_max,m,r,g,l_uv)*(np.dot(h0MatOdd,h2MatOdd) -np.dot(h2MatOdd,h0MatOdd))
-        hNLOOdd +=  hLOOdd + (c1Coeff(m,r,g,e_max,l_uv) )*h0MatOdd + bubbleOperatorConstantTerm(m,r,e_max,l_uv,g)*h0MatOdd
+        hNLOOdd = (1/24)*counter_terms.alpha1(e_max,m,r,g,l_uv)*(np.dot(h4MatOdd,h0MatOdd) - np.dot(h0MatOdd,h4MatOdd)) + (1/24)*counter_terms.alpha2(e_max,m,g)*np.dot(h0MatOdd,h4MatOdd)
+        hNLOOdd += 0.5*counter_terms.beta1(e_max,m,r,g,l_uv)*np.dot(h0MatOdd,h2MatOdd)+ 0.5*counter_terms.beta2(e_max,m,r,g,l_uv)*(np.dot(h0MatOdd,h2MatOdd) -np.dot(h2MatOdd,h0MatOdd))
+        hNLOOdd +=  hLOOdd + (bubble_operator.c1Coeff(m,r,g,e_max,l_uv) )*h0MatOdd + bubble_operator.bubbleOperatorConstantTerm(m,r,e_max,l_uv,g)*h0MatOdd
 
         #even start
         currentDirEven = os.getcwd() + "\\evenBasisHamiltonian"
@@ -164,9 +168,9 @@ for g in gg:
 
         hLO = h0Mat + mv2_sqEkrem(e_max, m, r, g, l_uv)*h2Mat + 1/24* (g + lambda2Ekrem(e_max, m, r, g, l_uv))*h4Mat
 
-        hNLO = (1/24)*alpha1Ekrem(e_max,m,r,g,l_uv)*(np.dot(h4Mat,h0Mat) - np.dot(h0Mat,h4Mat)) + (1/24)*alpha2Ekrem(e_max,m,g)*np.dot(h0Mat,h4Mat)
-        hNLO += 0.5*beta1Ekrem(e_max,m,r,g,l_uv)*np.dot(h0Mat,h2Mat)+ 0.5*beta2Ekrem(e_max,m,r,g,l_uv)*(np.dot(h0Mat,h2Mat) -np.dot(h2Mat,h0Mat))
-        hNLO +=  mv2_sqEkrem(e_max, m, r, g, l_uv)*h2Mat + 1/24* (g + lambda2Ekrem(e_max, m, r, g, l_uv))*h4Mat + h0Mat + (c1Coeff(m,r,g,e_max,l_uv) )*h0Mat + bubbleOperatorConstantTerm(m,r,e_max,l_uv,g)*h0Mat
+        hNLO = (1/24)*counter_terms.alpha1(e_max,m,r,g,l_uv)*(np.dot(h4Mat,h0Mat) - np.dot(h0Mat,h4Mat)) + (1/24)*counter_terms.alpha2(e_max,m,g)*np.dot(h0Mat,h4Mat)
+        hNLO += 0.5*counter_terms.beta1(e_max,m,r,g,l_uv)*np.dot(h0Mat,h2Mat)+ 0.5*counter_terms.beta2(e_max,m,r,g,l_uv)*(np.dot(h0Mat,h2Mat) -np.dot(h2Mat,h0Mat))
+        hNLO +=  counter_terms.mv2_sq(e_max, m, r, g, l_uv)*h2Mat + 1/24* (g + counter_terms.lambda2(e_max, m, r, g, l_uv))*h4Mat + h0Mat + (bubble_operator.c1Coeff(m,r,g,e_max,l_uv) )*h0Mat + bubble_operator.bubbleOperatorConstantTerm(m,r,e_max,l_uv,g)*h0Mat
         
         y = time.time()
         
