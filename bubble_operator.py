@@ -217,3 +217,11 @@ def c1Coeff(m,r,g,maxEnergy, angularMomUV):
     retVal = -r*pow(g,2)/(16*maxEnergy*pow(2*math.pi*r,2))*retVal
     
     return retVal
+
+
+def bubbleOperatorConstantTerm(m,r,maxEnergy,angularMomUV,g):
+    
+    retVal = calTermsForBubble(m,r,0,maxEnergy,angularMomUV)
+    returnValue= 1/24*pow(g, 2)/pow(2*math.pi*r, 2)*retVal/16
+    
+    return returnValue
