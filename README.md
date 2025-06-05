@@ -18,4 +18,3 @@ Feel free to reach to :
 
 
 
-<meta name="google-site-verification" content="4rNN15dzU7AZ0m9SCcYjHv9ybJV2oaLeiYZa1dgVJSA" />
