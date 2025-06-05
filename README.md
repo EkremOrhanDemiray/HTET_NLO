@@ -12,6 +12,6 @@ We plan to use decoders as much as possible to speed up the code, as at its curr
 
 # Contrubitors
 Feel free to reach to :
-- Ekrem Orhan Demiray - eo.demiray@ufl.edu
+- Ekrem Orhan Demiray - eo.demiray@ufl.edu / eodemiray@gmail.com
 - Rachel Houtz - rachel.houtz@ufl.edu
 - Kara Farnsworth - kmfarnsworth@gmail.com
