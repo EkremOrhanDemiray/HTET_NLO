@@ -65,7 +65,19 @@ for e_max in range(9, e_max_max+1):
     if n_max > int(np.floor(e_max / common_functions.omega(0, m, r))): 
         n_max = int(np.floor(e_max / common_functions.omega(0, m, r)))
     lmax=lmaxeff
+    
+    basisDir = os.getcwd() + "{}".format(lmax)+ "_" + "{}".format(e_max) + "{}".format(r)
+    if ( os.path.isfile(basisDir) == True):
+        basisOdd = np.loadtxt(basisDir).astype(np.int64)
 
+    else:
+        basis=common_functions.basis_l0(make_basis(lmax, e_max, m, r))
+        basis.sort()
+        basisMatCast = np.matrix(basis)
+        with open(basisDir, 'wb') as f:
+            for line in basisOddMatCast:
+                np.savetxt(f, line)
+                
     basis=common_functions.basis_l0(common_functions.make_basis(lmax, e_max, m, r))
     basis.sort()
     common_functions.gen_omega_list(l_uv+1, m, r)
@@ -77,7 +89,9 @@ for e_max in range(9, e_max_max+1):
         n_eigens = length_basis
         
     currentDir = os.getcwd() + "\\hamiltonians"
-    
+    if ( os.path.isdir(currentDir) == False):
+        os.makedirs(currentDirEven)
+        
     nameOfTheH0 = "H0"+"_"+"{}".format(lmaxeff)+ "_" + "{}".format(e_max)+ "_"+ "{}".format(m) + "_" + "r-20"
     nameOfTheH2 = "H2"+"_"+"{}".format(lmaxeff)+ "_" + "{}".format(e_max)+ "_"+ "{}".format(m) + "_" + "r-20"
     nameOfTheH4 = "H4"+"_"+"{}".format(lmaxeff)+ "_" + "{}".format(e_max)+ "_"+ "{}".format(m) + "_" + "r-20"
@@ -113,15 +127,15 @@ for e_max in range(9, e_max_max+1):
         
     h2Mat=1./4.*h2Mat
     h4Mat=1/r*1/(8*math.pi)*h4Mat
-    
+
     hRaw = h0Mat + 1/24* g*h4Mat
+
+    hLO = h0Mat + counter_terms.mv2_sqEkrem(e_max, m, r, g, l_uv)*h2Mat + 1/24* (g + counter_terms.lambda2Ekrem(e_max, m, r, g, l_uv))*h4Mat
+
+    hNLO = (1/24)*counter_terms.alpha1Ekrem(e_max,m,r,g,l_uv)*(np.dot(h4Mat,h0Mat) - np.dot(h0Mat,h4Mat)) + (1/24)*counter_terms.alpha2Ekrem(e_max,m,g)*np.dot(h0Mat,h4Mat)
+    hNLO += 0.5*counter_terms.beta1Ekrem(e_max,m,r,g,l_uv)*np.dot(h0Mat,h2Mat)+ 0.5*counter_terms.beta2Ekrem(e_max,m,r,g,l_uv)*(np.dot(h0Mat,h2Mat) -np.dot(h2Mat,h0Mat))
+    hNLO +=  counter_terms.mv2_sqEkrem(e_max, m, r, g, l_uv)*h2Mat + 1/24* (g + counter_terms.lambda2Ekrem(e_max, m, r, g, l_uv))*h4Mat + h0Mat + (bubble_operator.c1Coeff(m,r,g,e_max,l_uv) )*h0Mat + bubble_operator.bubbleOperatorConstantTerm(m,r,e_max,l_uv,g)*identity(length_basis)
     
-    hLO = h0Mat + counter_terms.mv2_sq(e_max, m, r, g, l_uv)*h2Mat + 1/24* (g + counter_terms.lambda2(e_max, m, r, g, l_uv))*h4Mat
-    
-    hNLO = hLO + 0.5*counter_terms.beta2(e_max,m,r,g,l_uv)*(h0Mat.multiply(h2Mat)-h2Mat.multiply(h0Mat))
-    hNLO += 0.5*counter_terms.beta1(e_max,m,r,g,l_uv)*h0Mat.multiply(h2Mat) + bubble_operator.bubbleOperator(m,r,basis,e_max,l_uv,g)
-    hNLO += (1/24)*counter_terms.alpha1(e_max,m,r,g,l_uv)*(h4Mat.multiply(h0Mat) - h0Mat.multiply(h4Mat))
-    hNLO += (1/24)*counter_terms.alpha2(e_max,m,g)*h0Mat.multiply(h4Mat)
     
     
 
